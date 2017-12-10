@@ -18,7 +18,6 @@ int main() {
 
   char ch;
   while(scanf("%c", &ch) > 0) {
-    cerr << (int) ch << endl;
     lenghts.push_back(ch);
   }
   lenghts.insert(lenghts.end(), { 17, 31, 73, 47, 23 });
