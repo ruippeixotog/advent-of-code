@@ -10,3 +10,4 @@
 .idea
 CMakeLists.txt
 cmake-build-debug
+.stack-work/
