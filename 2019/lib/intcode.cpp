@@ -8,6 +8,10 @@
 
 using namespace std;
 
+typedef long long ll;
+
+typedef vector<int> Prog;
+
 struct ProgState {
   vector<int> prog;
   int pc;
@@ -15,8 +19,8 @@ struct ProgState {
   queue<int> outs;
   int exitReason;
 
-  ProgState(const vector<int>& prog): prog(prog), pc(0), exitReason(-1) {}
-  ProgState(const vector<int>& prog, const vector<int>& input): ProgState(prog) {
+  ProgState(const Prog& prog): prog(prog), pc(0), exitReason(-1) {}
+  ProgState(const Prog& prog, const vector<int>& input): ProgState(prog) {
     for(int in : input) {
       ins.push(in);
     }
@@ -25,7 +29,7 @@ struct ProgState {
 
 // (re)starts execution of a program in a given state
 void runProgState(ProgState& state) {
-  vector<int>& prog = state.prog;
+  Prog& prog = state.prog;
   int& pc = state.pc;
 
   auto readP = [&prog](int pc, int pos) {
@@ -84,13 +88,13 @@ void runProgState(ProgState& state) {
 }
 
 // Run a program with the given inputs and return the last output value
-int runProg(const vector<int>& prog, const vector<int>& input) {
+int runProg(const Prog& prog, const vector<int>& input) {
   ProgState state(prog, input);
   runProgState(state);
   return state.outs.back();
 }
 
-void readProg(vector<int>& prog) {
+void readProg(Prog& prog) {
   int code;
   while(scanf("%d%*[,\n]", &code) > 0) {
     prog.push_back(code);

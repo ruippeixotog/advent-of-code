@@ -1,11 +1,10 @@
 #include <cstdio>
-#include <vector>
 #include "lib/intcode.cpp"
 
 using namespace std;
 
 int main() {
-  vector<int> baseProg;
+  Prog baseProg;
   readProg(baseProg);
 
   printf("%d\n", runProg(baseProg, {1}));

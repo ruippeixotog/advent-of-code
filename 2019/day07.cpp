@@ -5,7 +5,7 @@
 
 using namespace std;
 
-int runProgChain(const vector<int>& prog, int n, const vector<vector<int>>& initialInputs) {
+int runProgChain(const Prog& prog, int n, const vector<vector<int>>& initialInputs) {
   vector<ProgState> states(n, prog);
   for(int i = 0; i < n; i++) {
     for(int in : initialInputs[i]) {
@@ -24,7 +24,7 @@ int runProgChain(const vector<int>& prog, int n, const vector<vector<int>>& init
 }
 
 int main() {
-  vector<int> baseProg;
+  Prog baseProg;
   readProg(baseProg);
 
   vector<vector<int>> baseInputs[] = {

@@ -1,12 +1,11 @@
 #include <cstdio>
-#include <vector>
 #include "lib/intcode.cpp"
 
 #define TARGET 19690720
 
 using namespace std;
 
-int runProgWithInputs(vector<int>& prog, int a, int b) {
+int runProgWithInputs(Prog& prog, int a, int b) {
   prog[1] = a; prog[2] = b;
   ProgState state(prog, {});
   runProgState(state);
@@ -14,7 +13,7 @@ int runProgWithInputs(vector<int>& prog, int a, int b) {
 }
 
 int main() {
-  vector<int> baseProg;
+  Prog baseProg;
   readProg(baseProg);
 
   printf("%d\n", runProgWithInputs(baseProg, 12, 2));
