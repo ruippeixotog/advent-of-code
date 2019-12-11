@@ -1,41 +1,27 @@
 #include <cstdio>
 #include <vector>
+#include "lib/intcode.cpp"
 
 #define TARGET 19690720
 
 using namespace std;
 
-vector<int> baseProg;
-
-int runProg(vector<int> prog, int a, int b) {
+int runProgWithInputs(vector<int>& prog, int a, int b) {
   prog[1] = a; prog[2] = b;
-  for(int pc = 0; pc < prog.size(); pc += 4) {
-    switch(prog[pc]) {
-      case 99:
-        pc = prog.size();
-        break;
-      case 1:
-        prog[prog[pc + 3]] = prog[prog[pc + 1]] + prog[prog[pc + 2]];
-        break;
-      case 2:
-        prog[prog[pc + 3]] = prog[prog[pc + 1]] * prog[prog[pc + 2]];
-        break;
-    }
-  }
-  return prog[0];
+  ProgState state(prog, {});
+  runProgState(state);
+  return state.prog[0];
 }
 
 int main() {
-  int code;
-  while(scanf("%d%*[,\n]", &code) > 0) {
-    baseProg.push_back(code);
-  }
+  vector<int> baseProg;
+  readProg(baseProg);
 
-  printf("%d\n", runProg(baseProg, 12, 2));
+  printf("%d\n", runProgWithInputs(baseProg, 12, 2));
 
   for(int a = 0; a < 100; a++) {
     for (int b = 0; b < 100; b++) {
-      if(runProg(baseProg, a, b) == TARGET) {
+      if(runProgWithInputs(baseProg, a, b) == TARGET) {
         printf("%d\n", 100 * a + b);
         return 0;
       }
