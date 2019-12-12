@@ -1,4 +1,5 @@
 CC_FILES = $(wildcard */*.cpp)
+LIB_CC_FILES = $(wildcard */lib/*.cpp)
 HS_FILES = $(wildcard */*.hs)
 BIN_FILES = $(CC_FILES:.cpp=)
 
@@ -9,7 +10,7 @@ HC_FLAGS = -Wall -O2 -no-keep-hi-files -no-keep-o-files
 
 all: $(BIN_FILES)
 
-$(CC_FILES:.cpp=): %: %.cpp
+$(CC_FILES:.cpp=): %: %.cpp $(LIB_CC_FILES)
 	$(CC) $(CC_FLAGS) -o $@ $<
 
 $(HS_FILES:.hs=): %: %.hs
