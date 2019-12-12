@@ -112,7 +112,7 @@ void runProgState(ProgState& state) {
 }
 
 // Run a program with the given inputs and return the last output value
-int runProg(const Prog& prog, const vector<ll>& input) {
+ll runProg(const Prog& prog, const vector<ll>& input) {
   ProgState state(prog, input);
   runProgState(state);
   return state.outs.back();
