@@ -1,5 +1,6 @@
 #include <cmath>
 #include <queue>
+#include <unordered_map>
 #include <vector>
 #include <cstdio>
 
@@ -10,10 +11,10 @@ using namespace std;
 
 typedef long long ll;
 
-typedef vector<ll> Prog;
+typedef unordered_map<int, ll> Prog;
 
 struct ProgState {
-  vector<ll> prog;
+  Prog prog;
   int pc;
   int rbase;
   queue<ll> ins;
@@ -59,7 +60,7 @@ void runProgState(ProgState& state) {
     }
   };
 
-  while(pc < prog.size()) {
+  while(true) {
     switch(prog[pc] % 100) {
       case 99:
         state.exitReason = REASON_HALTED;
@@ -108,8 +109,6 @@ void runProgState(ProgState& state) {
         return;
     }
   }
-  fprintf(stderr, "Program counter outside bounds\n");
-  state.exitReason = REASON_HALTED;
 }
 
 // Run a program with the given inputs and return the last output value
@@ -120,8 +119,8 @@ int runProg(const Prog& prog, const vector<ll>& input) {
 }
 
 void readProg(Prog& prog) {
-  ll code;
+  ll code; int idx = 0;
   while(scanf("%lld%*[,\n]", &code) > 0) {
-    prog.push_back(code);
+    prog[idx++] = code;
   }
 }
