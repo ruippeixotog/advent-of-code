@@ -10,19 +10,19 @@ using namespace std;
 
 typedef long long ll;
 
-typedef vector<int> Prog;
+typedef vector<ll> Prog;
 
 struct ProgState {
-  vector<int> prog;
+  vector<ll> prog;
   int pc;
   int rbase;
-  queue<int> ins;
-  queue<int> outs;
+  queue<ll> ins;
+  queue<ll> outs;
   int exitReason;
 
   ProgState(const Prog& prog): prog(prog), pc(0), rbase(0), exitReason(-1) {}
-  ProgState(const Prog& prog, const vector<int>& input): ProgState(prog) {
-    for(int in : input) {
+  ProgState(const Prog& prog, const vector<ll>& input): ProgState(prog) {
+    for(ll in : input) {
       ins.push(in);
     }
   }
@@ -35,27 +35,27 @@ void runProgState(ProgState& state) {
   int& rbase = state.rbase;
 
   auto readP = [&prog, &rbase](int pc, int pos) {
-    int param = prog[pc + pos];
-    int flag = prog[pc] / (int) pow(10, pos + 1) % 10;
+    ll param = prog[pc + pos];
+    ll flag = prog[pc] / (ll) pow(10, pos + 1) % 10;
     switch(flag) {
       case 0: return prog[param];
       case 1: return param;
       case 2: return prog[rbase + param];
       default:
-        fprintf(stderr, "Unknown read mode: %d\n", flag);
-        return 0;
+        fprintf(stderr, "Unknown read mode: %lld\n", flag);
+        return 0LL;
     }
   };
 
   auto writeP = [&prog, &rbase](int pc, int pos) {
-    int param = prog[pc + pos];
-    int flag = prog[pc] / (int) pow(10, pos + 1) % 10;
+    ll param = prog[pc + pos];
+    ll flag = prog[pc] / (int) pow(10, pos + 1) % 10;
     switch(flag) {
       case 0: return &prog[param];
       case 2: return &prog[rbase + param];
       default:
-        fprintf(stderr, "Unknown write mode: %d\n", flag);
-        return (int*) nullptr;
+        fprintf(stderr, "Unknown write mode: %lld\n", flag);
+        return (ll*) nullptr;
     }
   };
 
@@ -86,10 +86,10 @@ void runProgState(ProgState& state) {
         pc += 2;
         break;
       case 5:
-        pc = readP(pc, 1) ? readP(pc, 2) : pc + 3;
+        pc = readP(pc, 1) ? (int) readP(pc, 2) : pc + 3;
         break;
       case 6:
-        pc = readP(pc, 1) ? pc + 3 : readP(pc, 2);
+        pc = readP(pc, 1) ? pc + 3 : (int) readP(pc, 2);
         break;
       case 7:
         *writeP(pc, 3) = readP(pc, 1) < readP(pc, 2);
@@ -104,7 +104,7 @@ void runProgState(ProgState& state) {
         pc += 2;
         break;
       default:
-        fprintf(stderr, "Illegal instruction: %d\n", prog[pc] % 100);
+        fprintf(stderr, "Illegal instruction: %lld\n", prog[pc] % 100);
         return;
     }
   }
@@ -113,15 +113,15 @@ void runProgState(ProgState& state) {
 }
 
 // Run a program with the given inputs and return the last output value
-int runProg(const Prog& prog, const vector<int>& input) {
+int runProg(const Prog& prog, const vector<ll>& input) {
   ProgState state(prog, input);
   runProgState(state);
   return state.outs.back();
 }
 
 void readProg(Prog& prog) {
-  int code;
-  while(scanf("%d%*[,\n]", &code) > 0) {
+  ll code;
+  while(scanf("%lld%*[,\n]", &code) > 0) {
     prog.push_back(code);
   }
 }
