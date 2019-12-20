@@ -54,13 +54,13 @@ int bfs(int i0, int j0) {
   memset(visited, false, sizeof(visited));
 
   queue<tuple<int, int, int>> q;
-  q.emplace(i0, j0, 0);
+  q.emplace(0, i0, j0);
   visited[i0][j0] = true;
   auto target = poi["ZZ"];
 
   while(!q.empty()) {
-    int i, j, dist;
-    tie(i, j, dist) = q.front(); q.pop();
+    int dist, i, j;
+    tie(dist, i, j) = q.front(); q.pop();
 
     if(dist > 0 && (portals.count({i, j}) || make_pair(i, j) == target)) {
       adjs[i0][j0].emplace_back(i, j, dist);
@@ -69,7 +69,7 @@ int bfs(int i0, int j0) {
       int i1 = i + di[dir], j1 = j + dj[dir];
       if(grid[i1][j1] == '.' && !visited[i1][j1]) {
         visited[i1][j1] = true;
-        q.emplace(i1, j1, dist + 1);
+        q.emplace(dist + 1, i1, j1);
       }
     }
   }
