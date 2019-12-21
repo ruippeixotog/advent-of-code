@@ -1,5 +1,6 @@
 #include <cmath>
 #include <queue>
+#include <string>
 #include <unordered_map>
 #include <vector>
 #include <cstdio>
@@ -29,7 +30,7 @@ struct ProgState {
   }
 };
 
-// (re)starts execution of a program in a given state
+// Starts or restarts execution of a program in a given state.
 void runProgState(ProgState& state) {
   Prog& prog = state.prog;
   int& pc = state.pc;
@@ -111,16 +112,66 @@ void runProgState(ProgState& state) {
   }
 }
 
-// Run a program with the given inputs and return the last output value
+// Runs a program with the given inputs and return the last output value.
 ll runProg(const Prog& prog, const vector<ll>& input) {
   ProgState state(prog, input);
   runProgState(state);
   return state.outs.back();
 }
 
+// Reads a program from stdin.
 void readProg(Prog& prog) {
   ll code; int idx = 0;
   while(scanf("%lld%*[,\n]", &code) > 0) {
     prog[idx++] = code;
+  }
+}
+
+// Reads an ASCII line from a program's outputs.
+string readLine(ProgState& state) {
+  string str;
+  while(!state.outs.empty()) {
+    char ch = state.outs.front(); state.outs.pop();
+    if(ch == '\n') break;
+    else str.push_back(ch);
+  }
+  return str;
+}
+
+// Writes an ASCII line to a program's inputs, ending with a newline.
+void writeLine(ProgState& state, const string& cmd) {
+  for(char ch : cmd + "\n") state.ins.push(ch);
+}
+
+// Reads an ASCII 2D grid from a program's inputs.
+// The grid ends with an empty line.
+void readGrid(ProgState& state, vector<string>& grid) {
+  while(!state.outs.empty()) {
+    string line = readLine(state);
+    if(line.empty() && grid.back().empty()) break;
+    grid.emplace_back(line);
+  }
+}
+
+// Runs an interactive program that accepts ASCII inputs (from prompts) and
+// writes ASCII output or large numbers. Answers can be autoamted using the
+// provided answer map.
+void runInteractive(ProgState& state, unordered_map<string, string> answers) {
+  while(state.exitReason != REASON_HALTED) {
+    runProgState(state);
+
+    while(!state.outs.empty()) {
+      if(state.outs.front() >= 256) {
+        printf("%lld\n", state.outs.front());
+        state.outs.pop();
+      }
+      string line = readLine(state);
+      if(answers.count(line)) {
+        writeLine(state, answers[line]);
+        printf("%s %s\n", line.c_str(), answers[line].c_str());
+      } else {
+        printf("%s\n", line.c_str());
+      }
+    }
   }
 }

@@ -98,55 +98,13 @@ bool findCmdsAndFuncs(int idx) {
   return false;
 }
 
-string readLine(ProgState& state) {
-  string str;
-  while(!state.outs.empty()) {
-    char ch = state.outs.front(); state.outs.pop();
-    if(ch == '\n') break;
-    else str.push_back(ch);
-  }
-  return str;
-}
-
-void writeLine(ProgState& state, const string& cmd) {
-  for(char ch : cmd + "\n") state.ins.push(ch);
-}
-
-void readGrid(ProgState& state) {
-  while(!state.outs.empty()) {
-    string line = readLine(state);
-    if(line.empty() && grid.back().empty()) break;
-    grid.emplace_back(line);
-  }
-}
-
-void runInteractive(ProgState& state, map<string, string> answers) {
-  while(state.exitReason != REASON_HALTED) {
-    runProgState(state);
-
-    while(!state.outs.empty()) {
-      if(state.outs.front() >= 256) {
-        printf("%lld\n", state.outs.front());
-        state.outs.pop();
-      }
-      string line = readLine(state);
-      if(answers.count(line)) {
-        writeLine(state, answers[line]);
-        printf("%s %s\n", line.c_str(), answers[line].c_str());
-      } else {
-        printf("%s\n", line.c_str());
-      }
-    }
-  }
-}
-
 int main() {
   Prog baseProg;
   readProg(baseProg);
 
   ProgState state(baseProg);
   runProgState(state);
-  readGrid(state);
+  readGrid(state, grid);
   printf("%d\n", alignmentSum());
 
   buildFullPath();
