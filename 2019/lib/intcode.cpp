@@ -154,9 +154,9 @@ void readGrid(ProgState& state, vector<string>& grid) {
 }
 
 // Runs an interactive program that accepts ASCII inputs (from prompts) and
-// writes ASCII output or large numbers. Answers can be autoamted using the
+// writes ASCII output or large numbers. Answers can be automated using the
 // provided answer map.
-void runInteractive(ProgState& state, unordered_map<string, string> answers) {
+void runInteractive(ProgState& state, unordered_map<string, function <string()>> answers) {
   while(state.exitReason != REASON_HALTED) {
     runProgState(state);
 
@@ -167,8 +167,10 @@ void runInteractive(ProgState& state, unordered_map<string, string> answers) {
       }
       string line = readLine(state);
       if(answers.count(line)) {
-        writeLine(state, answers[line]);
-        printf("%s %s\n", line.c_str(), answers[line].c_str());
+        printf("%s ", line.c_str());
+        string reply = answers[line]();
+        writeLine(state, reply);
+        printf("%s\n", reply.c_str());
       } else {
         printf("%s\n", line.c_str());
       }

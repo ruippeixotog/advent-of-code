@@ -113,11 +113,11 @@ int main() {
   ProgState state2(baseProg);
   state2.prog[0] = 2;
   runInteractive(state2, {
-    {"Main:", mainCmd},
-    {"Function A:", funcs[0]},
-    {"Function B:", funcs[1]},
-    {"Function C:", funcs[2]},
-    {"Continuous video feed?", "n"}
+    {"Main:", []() { return mainCmd; }},
+    {"Function A:", []() { return funcs[0]; }},
+    {"Function B:", []() { return funcs[1]; }},
+    {"Function C:", []() { return funcs[2]; }},
+    {"Continuous video feed?", []() { return "n"; }}
   });
   return 0;
 }
