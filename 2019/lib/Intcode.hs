@@ -30,19 +30,15 @@ data ProgState = ProgState
     sOuts :: Seq Int
   }
 
-data Mode = Pos | Imm deriving (Show)
-
-data Arg = Arg Mode Int deriving (Show)
-
 data Stmt
-  = Add Arg Arg Int
-  | Mul Arg Arg Int
+  = Add Int Int Int
+  | Mul Int Int Int
   | Read Int
-  | Write Arg
-  | Jnz Arg Arg
-  | Jz Arg Arg
-  | Lt Arg Arg Int
-  | Eq Arg Arg Int
+  | Write Int
+  | Jnz Int Int
+  | Jz Int Int
+  | Lt Int Int Int
+  | Eq Int Int Int
   | Halt
   deriving (Show)
 
@@ -66,42 +62,29 @@ runProg = do
   -- trace (show stmt) $
   case stmt of
     Add a b c -> do
-      aVal <- readArg a
-      bVal <- readArg b
-      writeData c (aVal + bVal)
+      writeData c (a + b)
       runProg
     Mul a b c -> do
-      aVal <- readArg a
-      bVal <- readArg b
-      writeData c (aVal * bVal)
+      writeData c (a * b)
       runProg
     Read a -> do
       inVal <- popInput
       writeData a inVal
       runProg
     Write a -> do
-      outVal <- readArg a
-      pushOutput outVal
+      pushOutput a
       runProg
     Jnz a b -> do
-      aVal <- readArg a
-      bVal <- readArg b
-      when (aVal /= 0) $ writePc bVal
+      when (a /= 0) $ writePc b
       runProg
     Jz a b -> do
-      aVal <- readArg a
-      bVal <- readArg b
-      when (aVal == 0) $ writePc bVal
+      when (a == 0) $ writePc b
       runProg
     Lt a b c -> do
-      aVal <- readArg a
-      bVal <- readArg b
-      writeData c (bool 0 1 $ aVal < bVal)
+      writeData c (bool 0 1 $ a < b)
       runProg
     Eq a b c -> do
-      aVal <- readArg a
-      bVal <- readArg b
-      writeData c (bool 0 1 $ aVal == bVal)
+      writeData c (bool 0 1 $ a == b)
       runProg
     Halt ->
       return ()
@@ -109,8 +92,11 @@ runProg = do
 nextStmt :: ProgMonad Stmt
 nextStmt = do
   opcode <- nextOpcode
-  let mode idx = toMode $ opcode `div` 10 ^ (1 + idx :: Int) `rem` 10
-      nextArg idx = Arg (mode idx) <$> nextOpcode
+  let mode idx = opcode `div` 10 ^ (1 + idx :: Int) `rem` 10
+      nextArg idx = derefArg (mode idx) =<< nextOpcode
+      derefArg 0 pos = readData pos
+      derefArg 1 val = return val
+      derefArg m _ = error $ "Invalid mode: " <> show m
    in case opcode `rem` 100 of
         1 -> (liftM3 Add) (nextArg 1) (nextArg 2) nextOpcode
         2 -> (liftM3 Mul) (nextArg 1) (nextArg 2) nextOpcode
@@ -123,21 +109,12 @@ nextStmt = do
         99 -> return Halt
         op -> error $ "Invalid opcode: " <> show op
 
-toMode :: Int -> Mode
-toMode 0 = Pos
-toMode 1 = Imm
-toMode n = error ("Invalid mode: " <> show n)
-
 nextOpcode :: ProgMonad Int
 nextOpcode = do
   pc <- gets sPc
   opcode <- readData pc
   writePc $ pc + 1
   return opcode
-
-readArg :: Arg -> ProgMonad Int
-readArg (Arg Pos pos) = readData pos
-readArg (Arg Imm val) = return val
 
 -----------------------------
 
