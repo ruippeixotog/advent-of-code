@@ -1,11 +1,10 @@
 import Lib.Intcode
-import Data.Foldable
 
 diagnostic :: Int -> Prog -> Int
 diagnostic inp = runProgMonad $ do
   pushInput inp
   runProg
-  last <$> toList <$> allOutputs
+  lastOutput
 
 solve1 :: Prog -> Int
 solve1 = diagnostic 1

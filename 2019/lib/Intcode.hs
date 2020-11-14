@@ -1,5 +1,3 @@
-{-# LANGUAGE FlexibleInstances #-}
-  
 module Lib.Intcode
   ( Prog,
     ProgMonad,
@@ -9,14 +7,15 @@ module Lib.Intcode
     readData,
     writeData,
     pushInput,
-    allOutputs,
     popOutput,
+    lastOutput,
   )
 where
 
 import Control.Monad
-import Control.Monad.State.Lazy (State, gets, modify, runState)
+import Control.Monad.State.Strict
 import Data.Bool
+import Data.Foldable
 import qualified Data.IntMap as IM
 import Data.Sequence (Seq (..))
 import qualified Data.Sequence as Seq
@@ -27,7 +26,8 @@ data ProgState = ProgState
   { sProg :: Prog,
     sPc :: Int,
     sIns :: Seq Int,
-    sOuts :: Seq Int
+    sOuts :: Seq Int,
+    sHalted :: Bool
   }
 
 data Stmt
@@ -53,41 +53,26 @@ parseProg = IM.fromList . zip [0 ..] . map read . codes
 
 runProgMonad :: ProgMonad a -> Prog -> a
 runProgMonad op prog =
-  let st = ProgState {sProg = prog, sPc = 0, sIns = Seq.empty, sOuts = Seq.empty}
+  let st = ProgState prog 0 Seq.empty Seq.empty False
    in fst $ runState op st
 
 runProg :: ProgMonad ()
 runProg = do
-  stmt <- nextStmt
-  -- trace (show stmt) $
-  case stmt of
-    Add a b c -> do
-      writeData c (a + b)
-      runProg
-    Mul a b c -> do
-      writeData c (a * b)
-      runProg
-    Read a -> do
-      inVal <- popInput
-      writeData a inVal
-      runProg
-    Write a -> do
-      pushOutput a
-      runProg
-    Jnz a b -> do
-      when (a /= 0) $ writePc b
-      runProg
-    Jz a b -> do
-      when (a == 0) $ writePc b
-      runProg
-    Lt a b c -> do
-      writeData c (bool 0 1 $ a < b)
-      runProg
-    Eq a b c -> do
-      writeData c (bool 0 1 $ a == b)
-      runProg
-    Halt ->
-      return ()
+  halted <- gets sHalted
+  unless halted $ do
+    stmt <- nextStmt
+    -- trace (show stmt) $
+    case stmt of
+      Add a b c -> writeData c $ a + b
+      Mul a b c -> writeData c $ a * b
+      Read a -> writeData a =<< popInput
+      Write a -> pushOutput a
+      Jnz a b -> when (a /= 0) $ writePc b
+      Jz a b -> when (a == 0) $ writePc b
+      Lt a b c -> writeData c $ bool 0 1 $ a < b
+      Eq a b c -> writeData c $ bool 0 1 $ a == b
+      Halt -> modify (\s -> s {sHalted = True})
+    runProg
 
 nextStmt :: ProgMonad Stmt
 nextStmt = do
@@ -131,27 +116,23 @@ pushInput :: Int -> ProgMonad ()
 pushInput val = modify (\s -> s {sIns = sIns s :|> val})
 
 popInput :: ProgMonad Int
-popInput = do
-  ins <- gets sIns
-  case ins of
-    next :<| rest -> do
-      modify (\s -> s {sIns = rest})
-      return next
-    _ ->
-      error "No inputs left"
-
-allOutputs :: ProgMonad (Seq Int)
-allOutputs = gets sOuts
+popInput = popSeq sIns $ \val s -> s {sIns = val}
 
 pushOutput :: Int -> ProgMonad ()
 pushOutput val = modify (\s -> s {sOuts = sOuts s :|> val})
 
 popOutput :: ProgMonad Int
-popOutput = do
-  outs <- gets sOuts
-  case outs of
+popOutput = popSeq sOuts $ \val s -> s {sOuts = val}
+
+lastOutput :: ProgMonad Int
+lastOutput = last . toList <$> gets sOuts
+
+popSeq :: (ProgState -> Seq a) -> (Seq a -> ProgState -> ProgState) -> ProgMonad a
+popSeq getter setter = do
+  elems <- gets getter
+  case elems of
     next :<| rest -> do
-      modify (\s -> s {sOuts = rest})
+      modify $ setter rest
       return next
     _ ->
-      error "No outputs left"
+      error "Queue is empty"
