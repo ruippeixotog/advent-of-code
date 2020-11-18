@@ -1,3 +1,4 @@
+import Control.Arrow
 import qualified Data.Map.Strict as M
 import qualified Data.Set as S
 
@@ -41,6 +42,4 @@ parseInput str =
         _ -> error "Malformed input"
 
 main :: IO ()
-main = interact $ show . tee solve1 solve2 . parseInput
-  where
-    tee f1 f2 arg = (f1 arg, f2 arg)
+main = interact $ show . (solve1 &&& solve2) . parseInput

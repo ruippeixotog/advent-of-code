@@ -1,3 +1,4 @@
+import Control.Arrow
 import Data.Bifunctor (bimap)
 import Data.List (unfoldr)
 
@@ -30,6 +31,4 @@ parseInput :: String -> (Int, Int)
 parseInput str = bimap read (read . tail) $ break (== '-') str
 
 main :: IO ()
-main = interact $ show . tee solve1 solve2 . parseInput
-  where
-    tee f1 f2 arg = (f1 arg, f2 arg)
+main = interact $ show . (solve1 &&& solve2) . parseInput

@@ -1,3 +1,4 @@
+import Control.Arrow
 import Lib.Intcode
 
 gravity :: Int -> Int -> Prog -> Int
@@ -18,6 +19,4 @@ solve2 prog =
         [] -> error "Noun-verb pair not found"
 
 main :: IO ()
-main = interact $ show . tee solve1 solve2 . parseProg
-  where
-    tee f1 f2 arg = (f1 arg, f2 arg)
+main = interact $ show . (solve1 &&& solve2) . parseProg

@@ -1,3 +1,5 @@
+import Control.Arrow
+
 solve1 :: [Int] -> Int
 solve1 = sum . map fuel
   where
@@ -15,6 +17,4 @@ parseInput :: String -> [Int]
 parseInput = map read . lines
 
 main :: IO ()
-main = interact $ show . tee solve1 solve2 . parseInput
-  where
-    tee f1 f2 arg = (f1 arg, f2 arg)
+main = interact $ show . (solve1 &&& solve2) . parseInput
