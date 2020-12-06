@@ -8,6 +8,6 @@
 *.exe
 
 .idea
+.vscode
 CMakeLists.txt
 cmake-build-debug
-.stack-work/
