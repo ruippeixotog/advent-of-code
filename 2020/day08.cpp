@@ -25,7 +25,7 @@ pair<bool, int> fixProg(vector<pair<string, int>>& prog) {
     if(inst.first != "acc") {
       inst.first = inst.first == "nop" ? "jmp" : "nop";
       auto res = runProg(prog);
-      if(res.first) return {true, res.second};
+      if(res.first) return res;
       inst.first = inst.first == "nop" ? "jmp" : "nop";
     }
   }
