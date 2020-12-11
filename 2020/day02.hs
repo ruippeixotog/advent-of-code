@@ -1,11 +1,11 @@
 import Control.Arrow
+import Data.Ix
 import Text.Regex
 
 solve1 :: [(Int, Int, Char, String)] -> Int
 solve1 = length . filter isValid
   where
-    between low hi x = x >= low && x <= hi
-    isValid (low, hi, ch, pass) = between low hi $ length $ filter (ch ==) pass
+    isValid (low, hi, ch, pass) = inRange (low, hi) $ length $ filter (ch ==) pass
 
 solve2 :: [(Int, Int, Char, String)] -> Int
 solve2 = length . filter isValid
