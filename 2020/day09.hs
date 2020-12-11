@@ -7,7 +7,7 @@ solve1 :: [Int] -> Int
 solve1 = head . mapMaybe match . tails
   where
     match xs = case splitAt 25 xs of
-      (xs, k : _) -> bool Nothing (Just k) $ and [x1 + x2 /= k | x1 <- xs, x2 <- xs]
+      (xs', k : _) -> bool Nothing (Just k) $ and [x1 + x2 /= k | x1 <- xs', x2 <- xs']
       _ -> Nothing
 
 solve2 :: [Int] -> Int
