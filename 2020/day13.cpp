@@ -27,8 +27,7 @@ int main() {
   ll t = 0, cycle = 1;
   for(int i = 0; i < schs.size(); i++) {
     if(schs[i] == -1) continue;
-    int reqMod = (schs[i] - i % schs[i]) % schs[i];
-    while(t % schs[i] != reqMod) t += cycle;
+    while((t + i) % schs[i] != 0) t += cycle;
     cycle *= schs[i];
   }
   printf("%d %lld\n", minWait * minBus, t);
