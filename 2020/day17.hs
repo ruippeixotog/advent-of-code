@@ -15,8 +15,8 @@ simulate 0 grid = grid
 simulate n grid = simulate (n - 1) $ step grid
   where
     step = Set.filter isActive . fold . Set.map (Set.fromList . adjCube)
-    activeAdjs pos = length $ filter (/= pos) $ filter (`Set.member` grid) $ adjCube pos
     isActive pos = activeAdjs pos == 3 || pos `Set.member` grid && activeAdjs pos == 2
+    activeAdjs pos = length $ filter (/= pos) $ filter (`Set.member` grid) $ adjCube pos
 
 solve1 :: [(Int, Int)] -> Int
 solve1 = length . simulate 6 . Set.fromList . map (\(i, j) -> [i, j, 0])
