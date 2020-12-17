@@ -20,22 +20,23 @@ void fillCube(vector<vector<int>>& neighs, vector<int>& pos, int k = 0) {
 int solve(set<vector<int>>& grid, int its) {
   for(int k = 0; k < its; k++) {
     set<vector<int>> newGrid;
-    
+
+    set<vector<int>> positions;
     for(auto basePos : grid) {
       vector<vector<int>> cube;
       fillCube(cube, basePos);
+      positions.insert(cube.begin(), cube.end());
+    }
+    for(auto pos : positions) {
+      vector<vector<int>> adjs;
+      fillCube(adjs, pos);
 
-      for(auto pos : cube) {
-        vector<vector<int>> adjs;
-        fillCube(adjs, pos);
-
-        int activeAdjs = 0;
-        for(auto adj : adjs) {
-          if(adj != pos && grid.count(adj)) activeAdjs++;
-        }
-        if(activeAdjs == 3 || (activeAdjs == 2 && grid.count(pos))) {
-          newGrid.emplace(pos);
-        }
+      int activeAdjs = 0;
+      for(auto adj : adjs) {
+        if(adj != pos && grid.count(adj)) activeAdjs++;
+      }
+      if(activeAdjs == 3 || (activeAdjs == 2 && grid.count(pos))) {
+        newGrid.emplace(pos);
       }
     }
     grid = newGrid;
