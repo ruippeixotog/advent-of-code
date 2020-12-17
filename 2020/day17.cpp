@@ -6,13 +6,13 @@
 
 using namespace std;
 
-void fillCube(vector<vector<int>>& neighs, vector<int>& pos, int k = 0) {
-  if(k == pos.size()) { neighs.push_back(pos); return; }
+void fillCube(vector<vector<int>>& cube, vector<int>& pos, int k = 0) {
+  if(k == pos.size()) { cube.push_back(pos); return; }
 
   int base = pos[k];
   for(int d = -1; d <= 1; d++) {
     pos[k] = base + d;
-    fillCube(neighs, pos, k + 1);
+    fillCube(cube, pos, k + 1);
   }
   pos[k] = base;
 }
