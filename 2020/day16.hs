@@ -1,9 +1,7 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 import Control.Arrow
 import Data.Ix
 import Data.List
-import qualified Data.Text as T
+import Data.List.Split
 import Text.Regex
 
 type Rule = ((Int, Int), (Int, Int))
@@ -21,7 +19,7 @@ solve1 (fields, ts) = sum $ concatMap (filter isInvalidVal) ts
 solve2 :: Input -> Int
 solve2 (fields, ts) =
   product $ map snd $ filter (isPrefixOf "departure" . fst) $
-    resolve [] $ map (id &&& validNames) $ transpose $ filter isValidTix ts
+        resolve [] $ map (id &&& validNames) $ transpose $ filter isValidTix ts
   where
     isValidTix = all $ \v -> any (isValid v . snd) fields
     validNames col = map fst $ filter (\(_, rule) -> all (`isValid` rule) col) fields
@@ -41,7 +39,7 @@ parseInput str =
     inputRegex = mkRegexWithOpts "(.+)\n\nyour ticket:\n(.+)\n\nnearby tickets:\n(.+)" False True
     fieldRegex = mkRegex "([^:]+): ([0-9]+)-([0-9]+) or ([0-9]+)-([0-9]+)"
 
-    readTicket = map (read . T.unpack) . T.splitOn "," . T.pack
+    readTicket = map read . splitOn ","
     readField fieldStr =
       case matchRegex fieldRegex fieldStr of
         Just [name, low1, hi1, low2, hi2] -> (name, ((read low1, read hi1), (read low2, read hi2)))

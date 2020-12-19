@@ -1,5 +1,3 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 import Control.Arrow
 import Data.Bifunctor
 import Data.List.Split

@@ -1,10 +1,8 @@
-{-# LANGUAGE OverloadedStrings #-}
-
 import Control.Arrow
+import Data.List.Split
 import Data.Map.Strict (Map)
 import qualified Data.Map.Strict as Map
 import Data.Maybe
-import qualified Data.Text as T
 import Text.Regex
 
 rules1 :: [(String, Regex)]
@@ -32,7 +30,7 @@ solve2 :: [Map String String] -> Int
 solve2 = length . filter (validate rules2)
 
 parseInput :: String -> [Map String String]
-parseInput = map (parsePass . T.unpack) . T.splitOn "\n\n" . T.pack
+parseInput = map parsePass . splitOn "\n\n"
   where
     parsePass = Map.fromList . map (second tail . span (/= ':')) . words
 

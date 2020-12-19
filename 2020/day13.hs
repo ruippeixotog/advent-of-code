@@ -1,9 +1,8 @@
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TupleSections #-}
 
 import Control.Arrow
+import Data.List.Split
 import Data.Maybe
-import qualified Data.Text as T
 import Text.Read
 
 solve1 :: (Int, [(Int, Int)]) -> Int
@@ -25,8 +24,7 @@ parseInput str =
     [n, schs] -> (read n, readSchs schs)
     _ -> error $ "Illegal input: " <> str
   where
-    split = map T.unpack . T.splitOn "," . T.pack
-    readSchs = mapMaybe (\(i, sch) -> (i,) <$> readMaybe sch) . zip [0 ..] . split
+    readSchs = mapMaybe (\(i, sch) -> (i,) <$> readMaybe sch) . zip [0 ..] . splitOn ","
 
 main :: IO ()
 main = interact $ show . (solve1 &&& solve2) . parseInput
