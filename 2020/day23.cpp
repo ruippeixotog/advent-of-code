@@ -9,7 +9,7 @@ struct Node {
   int val; Node *next;
  
   Node(): next(this) {}
-  void insertNext(Node* node) { node->next = next; next = node; }
+  void insertNext(Node* begin, Node* end) { end->next = next; next = begin; }
 };
 
 vector<int> play(int moves, int n, vector<int> initials) {
@@ -19,7 +19,7 @@ vector<int> play(int moves, int n, vector<int> initials) {
   for(int i = 0; i < n; i++) {
     int elem = i < initials.size() ? initials[i] : i + 1;
     index[elem].val = elem;
-    index[prevElem].insertNext(&index[elem]);
+    index[prevElem].insertNext(&index[elem], &index[elem]);
     prevElem = elem;
   }
 
@@ -34,8 +34,7 @@ vector<int> play(int moves, int n, vector<int> initials) {
     while(target < 1 || find(seq, seq + 3, target) != seq + 3) {
       target = target < 1 ? n : target - 1;
     }
-    index[seq[2]].next = index[target].next;
-    index[target].next = &index[seq[0]];
+    index[target].insertNext(&index[seq[0]], &index[seq[2]]);
   }
   vector<int> res;
   for(auto* node = index[1].next; res.size() < 8; node = node->next) {
