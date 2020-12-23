@@ -3,7 +3,7 @@ import Data.IntMap.Strict (IntMap)
 import qualified Data.IntMap.Strict as Map
 import Data.List
 import Data.Maybe
-import Data.Sequence (Seq (..))
+import Data.Sequence (Seq (..), (><))
 import qualified Data.Sequence as Seq
 
 data CList = CList (IntMap (Seq Int)) (Seq Int)
@@ -14,7 +14,7 @@ cFromList xs = CList Map.empty $ Seq.fromList xs
 cPop :: CList -> (Int, CList)
 cPop (CList aps Empty) = error $ "Empty list " <> show aps
 cPop (CList aps (x :<| xs)) = case Map.lookup x aps of
-  Just ap -> cPop (CList (Map.delete x aps) (x :<| ap Seq.>< xs))
+  Just ap -> cPop (CList (Map.delete x aps) (x :<| ap >< xs))
   Nothing -> (x, CList aps xs)
 
 cPopN :: Int -> CList -> ([Int], CList)
@@ -27,7 +27,7 @@ cAppend x (CList aps qs) = CList aps (qs :|> x)
 cAppendAfter :: [Int] -> Int -> CList -> CList
 cAppendAfter xs k (CList aps qs) = CList (Map.alter alterFunc k aps) qs
   where
-    alterFunc = Just . (Seq.><) (Seq.fromList xs) . fromMaybe Empty
+    alterFunc = Just . (><) (Seq.fromList xs) . fromMaybe Empty
 
 cToList :: CList -> [Int]
 cToList (CList _ Empty) = []
