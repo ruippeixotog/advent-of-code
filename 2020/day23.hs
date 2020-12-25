@@ -14,7 +14,7 @@ cFromList xs = CList Map.empty $ Seq.fromList xs
 cPop :: CList -> (Int, CList)
 cPop (CList aps Empty) = error $ "Empty list " <> show aps
 cPop (CList aps (x :<| xs)) = case Map.lookup x aps of
-  Just ap -> cPop (CList (Map.delete x aps) (x :<| ap >< xs))
+  Just ap -> cPop $ CList (Map.delete x aps) (x :<| ap >< xs)
   Nothing -> (x, CList aps xs)
 
 cPopN :: Int -> CList -> ([Int], CList)
