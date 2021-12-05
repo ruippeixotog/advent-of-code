@@ -1,27 +1,23 @@
 import Control.Arrow
-import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as Map
 import Data.Maybe
 import Text.Regex
 
 type Coord = (Int, Int)
 
-expand :: (Coord, Coord) -> [Coord]
-expand ((x0, y0), (x1, y1)) = range x0 x1 `zip` range y0 y1
-  where
-    range p0 p1 = [p0, p0 + signum (p1 - p0) .. p1]
-
-fillMap :: [Coord] -> HashMap Coord Int
+fillMap :: [Coord] -> Map.HashMap Coord Int
 fillMap = foldr (Map.alter $ Just . (+ 1) . fromMaybe 0) Map.empty
 
 solve1 :: [(Coord, Coord)] -> Int
-solve1 = Map.size . Map.filter (> 1) . fillMap . concat . filter isValid . map expand
+solve1 = solve2 . filter isValid
   where
-    isValid ((x0, y0) : (x1, y1) : _) = x0 == x1 || y0 == y1
-    isValid _ = True
+    isValid ((x0, y0), (x1, y1)) = x0 == x1 || y0 == y1
 
 solve2 :: [(Coord, Coord)] -> Int
 solve2 = Map.size . Map.filter (> 1) . fillMap . concatMap expand
+  where
+    expand ((x0, y0), (x1, y1)) = range x0 x1 `zip` range y0 y1
+    range p0 p1 = [p0, p0 + signum (p1 - p0) .. p1]
 
 parseInput :: String -> [(Coord, Coord)]
 parseInput = map parseLine . lines
