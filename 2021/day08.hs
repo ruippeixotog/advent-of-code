@@ -1,6 +1,5 @@
 import Control.Arrow
 import Data.Char
-import Data.Foldable
 import Data.List
 import Data.List.Split
 import Data.Maybe
@@ -30,7 +29,7 @@ solve1 = length . filter (`elem` [2, 3, 4, 7]) . map length . concatMap snd
 solve2 :: [([[Char]], [[Char]])] -> Int
 solve2 = sum . map match
   where
-    digitMapping ins = head . toList . digit . sort . map (segMapping ins)
+    digitMapping ins = fromJust . digit . sort . map (segMapping ins)
     match (ins, outs) = read $ concatMap (show . digitMapping ins) outs
 
 parseInput :: String -> [([[Char]], [[Char]])]
