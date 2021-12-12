@@ -25,7 +25,7 @@ simulate initial = map fst $ iterate (step . snd) (0, initial)
         [(i + di, j + dj) | di <- [-1 .. 1], dj <- [-1 .. 1], di /= 0 || dj /= 0]
 
 solve1 :: [[Int]] -> Int
-solve1 = sum . take 101 . simulate . toMap
+solve1 = sum . take 100 . tail . simulate . toMap
 
 solve2 :: [[Int]] -> Int
 solve2 = fromJust . elemIndex 100 . simulate . toMap
