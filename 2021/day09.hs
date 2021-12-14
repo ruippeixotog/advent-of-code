@@ -1,3 +1,5 @@
+{-# LANGUAGE TupleSections #-}
+
 import Control.Arrow
 import Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as Map
@@ -31,7 +33,7 @@ solve2 :: [[Int]] -> Int
 solve2 xs = product $ take 3 $ sortOn Down $ Map.elems $ hist $ sink grid <$> Map.keys grid
   where
     grid = toMap xs
-    hist = foldr (Map.alter $ Just . (+ 1) . fromMaybe 0) Map.empty
+    hist = Map.fromListWith (+) . map (,1)
 
 parseInput :: String -> [[Int]]
 parseInput = map (map (read . (: []))) . lines
