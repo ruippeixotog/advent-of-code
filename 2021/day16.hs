@@ -51,12 +51,10 @@ readArgs =
   readN 1 >>= \case
     [False] -> do
       len <- readN 15
-      fmap consume $ readN $ binToInt len
+      unfoldr consume <$> readN (binToInt len)
       where
-        consume [] = []
-        consume bits =
-          let (p, rest) = runState readPacket bits
-           in p : consume rest
+        consume [] = Nothing
+        consume bits = Just $ runState readPacket bits
     [True] -> do
       n <- readN 11
       replicateM (binToInt n) readPacket
