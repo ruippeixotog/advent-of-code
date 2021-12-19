@@ -25,17 +25,16 @@ match sc1 sc2 = fmap (id &&& merge) $ findTf $ [(cSub c2 c1, 1 :: Int) | c1 <- s
     merge tf = nub $ sc1 ++ map (`cSub` tf) sc2
 
 assemble :: [Scanner] -> ([Coord], Scanner)
-assemble [] = error "Illegal state"
+assemble [] = error "No scanners provided"
 assemble [base] = ([(0, 0, 0)], base)
 assemble (base : rest) =
-  case findMatching rest of
-    Just ((tf, sc'), rest') -> first (tf :) $ assemble (sc' : rest')
-    Nothing -> assemble $ rest ++ [base]
+  let ((tf, sc'), rest') = findMatching rest
+   in first (tf :) $ assemble (sc' : rest')
   where
-    findMatching [] = Nothing
+    findMatching [] = error "Couldn't find match"
     findMatching (sc' : rest') = case mapMaybe (match base) (variants sc') of
-      (matched : _) -> Just (matched, rest')
-      [] -> second (sc' :) <$> findMatching rest'
+      (matched : _) -> (matched, rest')
+      [] -> second (sc' :) $ findMatching rest'
 
 solve1 :: [Scanner] -> Int
 solve1 = length . snd . assemble
