@@ -3,7 +3,7 @@ import Data.List
 import qualified Data.Map as Map
 import Text.Regex
 
-data Cube = Cube {cIdx :: Int, cOn :: Bool, cStart :: [Int], cEnd :: [Int]} deriving (Eq)
+data Cube = Cube {cIdx :: Int, cIsOn :: Bool, cStart :: [Int], cEnd :: [Int]} deriving (Eq)
 
 solve1 :: [Cube] -> Int
 solve1 = solve2 . filter valid
@@ -12,21 +12,19 @@ solve1 = solve2 . filter valid
 
 solve2 :: [Cube] -> Int
 solve2 [] = 0
-solve2 xs@((Cube _ _ [] []) : _) = fromEnum $ cOn $ last $ sortOn cIdx xs
-solve2 xs = fst $ Map.foldlWithKey step initial $ Map.fromListWith (++) $ concatMap toEithers xs
+solve2 xs@((Cube _ _ [] []) : _) = fromEnum $ cIsOn $ last $ sortOn cIdx xs
+solve2 xs = fst $ Map.foldlWithKey step initial $ Map.fromListWith (++) $ concatMap toEvents xs
   where
     initial = (0, (minBound, []))
 
-    step (cnt, (prev, active)) curr cubes =
-      (cnt + (curr - prev) * solve2 active, (curr, foldl update active cubes))
-
-    update active (Left c) = c : active
-    update active (Right c) = delete c active
-
-    toEithers (Cube idx b (x0 : rest0) (x1 : rest1)) =
+    toEvents (Cube idx b (x0 : rest0) (x1 : rest1)) =
       let newCube = Cube idx b rest0 rest1
        in [(x0, [Left newCube]), (x1 + 1, [Right newCube])]
-    toEithers _ = error "Unexpected zero-dimension cube"
+    toEvents _ = error "Unexpected zero-dimension cube"
+
+    step (cnt, (prev, active)) curr events =
+      let newActive = foldr (either (:) delete) active events
+       in (cnt + (curr - prev) * solve2 active, (curr, newActive))
 
 parseInput :: String -> [Cube]
 parseInput = zipWith parseLine [0 ..] . lines
