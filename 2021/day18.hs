@@ -11,7 +11,6 @@ explode = fmap snd . explode' (0 :: Int)
   where
     explode' depth (Pair (Term a) (Term b))
       | depth >= 4 = Just ((Just a, Just b), Term 0)
-      | otherwise = Nothing
     explode' depth (Pair lhs rhs) =
       case explode' (depth + 1) <$> [lhs, rhs] of
         [Just ((restL, restR), newLhs), _] -> Just ((restL, Nothing), Pair newLhs (add False restR rhs))
