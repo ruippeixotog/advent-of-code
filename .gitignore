@@ -11,6 +11,8 @@
 CMakeLists.txt
 cmake-build-debug
 
+.bloop
 .bsp
 .metals
 target/
+metals.sbt
