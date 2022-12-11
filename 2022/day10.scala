@@ -17,7 +17,7 @@ object Day10 extends App {
 
   println {
     xs.zip(Stream.continually(1 to 40).flatten)
-      .map { case (x, i) => if(x >= i - 2 && x <= i) '#' else '.' }
+      .map { case (x, i) => if (x >= i - 2 && x <= i) '#' else '.' }
       .grouped(40)
       .map(_.mkString)
       .mkString("\n")

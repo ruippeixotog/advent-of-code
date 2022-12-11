@@ -18,7 +18,7 @@ object Day02 extends App {
   }
 
   println(score { (_, r) => r - 'X' })
-  
+
   println(score {
     case (l, 'X') => (l + 2) % 3
     case (l, 'Y') => l

@@ -6,7 +6,7 @@ case class Monkey(items: List[Long], inspect: Long => Long, test: Int, ifTrue: I
 
   def inspectAll: List[(Int, Long)] = {
     val newItems = items.map(inspect)
-    newItems.map(_ % test == 0).map(if(_) ifTrue else ifFalse).zip(newItems)
+    newItems.map(_ % test == 0).map(if (_) ifTrue else ifFalse).zip(newItems)
   }
 }
 
@@ -20,12 +20,12 @@ object Day11 extends App {
     |    If false: throw to monkey (\d+)
     """.trim.stripMargin.r
 
-  def op(str: String): (Long, Long) => Long = if(str == "+") _ + _ else _ * _
-  def opArg(str: String): Long => Long = if(str == "old") identity else _ => str.toLong
+  def op(str: String): (Long, Long) => Long = if (str == "+") _ + _ else _ * _
+  def opArg(str: String): Long => Long = if (str == "old") identity else _ => str.toLong
 
   val in = patt.findAllMatchIn(Source.fromFile("2022/day11.in").mkString).map {
     case Regex.Groups(itemsStr, opLhsStr, opStr, opRhsStr, test, ifTrue, ifFalse) =>
-      def inspect(old: Long) = op(opStr)(opArg(opLhsStr)(old), opArg(opRhsStr)(old)) 
+      def inspect(old: Long) = op(opStr)(opArg(opLhsStr)(old), opArg(opRhsStr)(old))
       val items = itemsStr.split(", ").toList.map(_.toLong)
       Monkey(items, inspect, test.toInt, ifTrue.toInt, ifFalse.toInt)
   }.toVector

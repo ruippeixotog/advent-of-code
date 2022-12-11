@@ -8,7 +8,7 @@ object Day09 extends App {
 
   def nextT(h: (Int, Int), t: (Int, Int)): (Int, Int) = (h, t) match {
     case ((hx, hy), (tx, ty)) =>
-      if((hx - tx).abs <= 1 && (hy - ty).abs <= 1) t
+      if ((hx - tx).abs <= 1 && (hy - ty).abs <= 1) t
       else (tx + (hx - tx).signum, ty + (hy - ty).signum)
   }
 

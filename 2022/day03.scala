@@ -4,7 +4,7 @@ object Day03 extends App {
   val in = Source.fromFile("2022/day03.in").getLines.toList
 
   def prio(ch: Char): Int =
-    if(ch >= 'a') ch - 'a' + 1 else ch - 'A' + 27
+    if (ch >= 'a') ch - 'a' + 1 else ch - 'A' + 27
 
   println(
     in.map { line => line.splitAt(line.length / 2) }

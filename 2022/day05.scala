@@ -7,8 +7,8 @@ object Day05 extends App {
     val Array(in1, in2) = Source.fromFile("2022/day05.in").mkString.split("\n\n")
 
     val st = in1.split("\n").toList.transpose.map(_.filter(_.isUpper)).filter(_.nonEmpty)
-    val inCmds = in2.split("\n").map {
-      case patt(n, from, to) => (n.toInt, from.toInt - 1, to.toInt - 1)
+    val inCmds = in2.split("\n").map { case patt(n, from, to) =>
+      (n.toInt, from.toInt - 1, to.toInt - 1)
     }
     (st.toVector, inCmds)
   }
