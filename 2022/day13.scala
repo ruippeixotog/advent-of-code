@@ -31,7 +31,7 @@ object Day13 extends App {
     .filterNot(_.isEmpty).map(parser.parse(_)).toList
 
   println {
-    in.grouped(2).zipWithIndex.collect { case (List(p1, p2), i) if p1 < p2 => i }.sum
+    in.grouped(2).zipWithIndex.collect { case (List(p1, p2), i) if p1 < p2 => i + 1 }.sum
   }
   println {
     val dividers = List(parser.parse("[[2]]"), parser.parse("[[6]]"))
