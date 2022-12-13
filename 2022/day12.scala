@@ -4,7 +4,7 @@ import scala.collection.immutable.Queue
 object Day12 extends App {
   val in = Source.fromFile("2022/day12.in").getLines.toVector
 
-  val indices = for(i <- 0 until in.length; j <- 0 until in(i).length) yield (i, j)
+  val indices = for (i <- 0 until in.length; j <- 0 until in(i).length) yield (i, j)
   val revIdx = indices.groupBy { case (i, j) => in(i)(j) }
 
   def elevation(i: Int, j: Int): Int = in(i)(j) match {
