@@ -19,7 +19,7 @@ object Day13 extends App {
   case class PInt(n: Int) extends Packet
   case class PList(ps: List[Packet]) extends Packet
 
-  val parser = new RegexParsers {
+  object PacketParser extends RegexParsers {
     val number: Parser[PInt] = "\\d+".r ^^ { _.toInt } ^^ PInt.apply
     val list: Parser[PList] = "[" ~> repsep(packet, ",") <~ "]" ^^ PList.apply
     val packet: Parser[Packet] = number | list
@@ -28,13 +28,13 @@ object Day13 extends App {
   }
 
   val in = Source.fromFile("2022/day13.in").getLines
-    .filterNot(_.isEmpty).map(parser.parse(_)).toList
+    .filterNot(_.isEmpty).map(PacketParser.parse).toList
 
   println {
     in.grouped(2).zipWithIndex.collect { case (List(p1, p2), i) if p1 < p2 => i + 1 }.sum
   }
   println {
-    val dividers = List(parser.parse("[[2]]"), parser.parse("[[6]]"))
+    val dividers = List("[[2]]", "[[6]]").map(PacketParser.parse)
     val packets = (dividers ++ in).sorted
     dividers.map(packets.indexOf(_) + 1).product
   }
