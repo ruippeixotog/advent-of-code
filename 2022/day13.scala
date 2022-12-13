@@ -4,11 +4,11 @@ import scala.util.parsing.combinator._
 object Day13 extends App {
   sealed trait Packet extends Ordered[Packet] {
     def compare(that: Packet): Int = (this, that) match {
-      case (PInt(n1), PInt(n2)) => if(n1 == n2) 0 else n1 - n2
-      case (PInt(n1), PList(_)) => PList(List(this)) compare that
-      case (PList(_), PInt(n2)) => this compare PList(List(that))
+      case (PInt(n1), PInt(n2)) => n1 compare n2
+      case (PInt(_), PList(_)) => PList(List(this)) compare that
+      case (PList(_), PInt(_)) => this compare PList(List(that))
       case (PList(Nil), PList(Nil)) => 0
-      case (PList(Nil), PList(xs2)) => -1
+      case (PList(Nil), PList(_)) => -1
       case (PList(_), PList(Nil)) => 1
       case (PList(p1 :: ps1), PList(p2 :: ps2)) => p1 compare p2 match {
         case 0 => PList(ps1) compare PList(ps2)
