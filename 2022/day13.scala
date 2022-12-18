@@ -10,10 +10,11 @@ object Day13 extends App {
       case (PList(Nil), PList(Nil)) => 0
       case (PList(Nil), PList(_)) => -1
       case (PList(_), PList(Nil)) => 1
-      case (PList(p1 :: ps1), PList(p2 :: ps2)) => p1 compare p2 match {
-        case 0 => PList(ps1) compare PList(ps2)
-        case res => res
-      }
+      case (PList(p1 :: ps1), PList(p2 :: ps2)) =>
+        p1 compare p2 match {
+          case 0 => PList(ps1) compare PList(ps2)
+          case res => res
+        }
     }
   }
   case class PInt(n: Int) extends Packet

@@ -3,14 +3,14 @@ import scala.io.Source
 object Day15 extends App {
   val patt = """Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)""".r
 
-  val in = Source.fromFile("2022/day15.in").getLines.map {
-    case patt(sx, sy, bx, by) => (sx.toInt, sy.toInt, bx.toInt, by.toInt)
+  val in = Source.fromFile("2022/day15.in").getLines.map { case patt(sx, sy, bx, by) =>
+    (sx.toInt, sy.toInt, bx.toInt, by.toInt)
   }.toList
 
   def interval(y: Int)(sx: Int, sy: Int, bx: Int, by: Int): Option[(Int, Int)] = {
     val dist = (sx - bx).abs + (sy - by).abs
     val range = dist - (sy - y).abs
-    if(range <= 0) None else Some((sx - range, sx + range))
+    if (range <= 0) None else Some((sx - range, sx + range))
   }
 
   extension (intervals: List[(Int, Int)]) {

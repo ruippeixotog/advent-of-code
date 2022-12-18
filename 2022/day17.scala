@@ -3,11 +3,17 @@ import scala.annotation.tailrec
 import scala.collection.immutable.BitSet
 
 final case class Tetris(
-  grid: BitSet, height: Int, trimHeight: Long, pieceIdx: Int, windPatt: Vector[Int], windIdx: Int) {
+    grid: BitSet,
+    height: Int,
+    trimHeight: Long,
+    pieceIdx: Int,
+    windPatt: Vector[Int],
+    windIdx: Int
+) {
 
   def get(x: Int, y: Int): Boolean =
-    if(y <= 0 || x <= 0 || x >= 8) true else grid(y * 7 + (x - 1))
-  
+    if (y <= 0 || x <= 0 || x >= 8) true else grid(y * 7 + (x - 1))
+
   def set(x: Int, y: Int): Tetris =
     copy(grid = grid + (y * 7 + (x - 1)), height = height.max(y))
 
@@ -25,8 +31,8 @@ final case class Tetris(
 
   def moveAndPlace(piece: List[(Int, Int)], x: Int, y: Int): Tetris = {
     val (wx, tet) = nextWind
-    val (x0, y0) = if(collides(piece, x + wx, y)) (x, y) else (x + wx, y)
-    if(collides(piece, x0, y0 - 1)) tet.place(piece, x0, y0)
+    val (x0, y0) = if (collides(piece, x + wx, y)) (x, y) else (x + wx, y)
+    if (collides(piece, x0, y0 - 1)) tet.place(piece, x0, y0)
     else tet.moveAndPlace(piece, x0, y0 - 1)
   }
 
@@ -78,7 +84,7 @@ object Tetris {
 }
 
 object Day17 extends App {
-  val in = Source.fromFile("2022/day17.in").mkString.trim.map { ch => if(ch == '<') -1 else 1 }
+  val in = Source.fromFile("2022/day17.in").mkString.trim.map { ch => if (ch == '<') -1 else 1 }
 
   println(Tetris(in).run(2022).totalHeight)
   println(Tetris(in).run(1000000000000L).totalHeight)
