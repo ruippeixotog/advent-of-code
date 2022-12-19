@@ -13,10 +13,10 @@ object Day19 extends App {
     Blueprint(
       a.toInt,
       List(
-        List(b.toInt, 0, 0, 0),
-        List(c.toInt, 0, 0, 0),
-        List(d.toInt, e.toInt, 0, 0),
-        List(f.toInt, 0, g.toInt, 0),
+        List(b.toInt, 0, 0),
+        List(c.toInt, 0, 0),
+        List(d.toInt, e.toInt, 0),
+        List(f.toInt, 0, g.toInt)
       )
     )
   }.toList
@@ -25,7 +25,7 @@ object Day19 extends App {
     t * (t - 1) / 2
 
   def cdiv(num: Int, denom: Int) =
-    if(denom == 0) Int.MinValue else (num + denom - 1) / denom
+    if (denom == 0) Int.MinValue else (num + denom - 1) / denom
 
   def optimize(bp: Blueprint, maxTime: Int): Int = {
     var mem = Map[Any, Int]()
