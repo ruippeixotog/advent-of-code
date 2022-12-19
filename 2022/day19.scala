@@ -1,6 +1,6 @@
 import scala.io.Source
 
-case class Blueprint(id: Int, recipes: List[(String, Map[String, Int])])
+case class Blueprint(id: Int, recipes: List[List[Int]])
 
 object Day19 extends App {
   val patt =
@@ -13,10 +13,10 @@ object Day19 extends App {
     Blueprint(
       a.toInt,
       List(
-        "geode" -> Map("ore" -> f.toInt, "obsidian" -> g.toInt),
-        "obsidian" -> Map("ore" -> d.toInt, "clay" -> e.toInt),
-        "clay" -> Map("ore" -> c.toInt),
-        "ore" -> Map("ore" -> b.toInt)
+        List(b.toInt, 0, 0, 0),
+        List(c.toInt, 0, 0, 0),
+        List(d.toInt, e.toInt, 0, 0),
+        List(f.toInt, 0, g.toInt, 0),
       )
     )
   }.toList
@@ -25,13 +25,13 @@ object Day19 extends App {
     t * (t - 1) / 2
 
   def cdiv(num: Int, denom: Int) =
-    (num + denom - 1) / denom
+    if(denom == 0) Int.MinValue else (num + denom - 1) / denom
 
-  def optimize(bp: Blueprint, target: String, maxTime: Int): Int = {
+  def optimize(bp: Blueprint, maxTime: Int): Int = {
     var mem = Map[Any, Int]()
     var best = 0
 
-    def aux(t: Int, qnts: Map[String, Int], rates: Map[String, Int], geo: Int): Int = {
+    def aux(t: Int, qnts: List[Int], rates: List[Int], geo: Int): Int = {
       if (t <= 1) { best = best.max(geo); geo }
       else if (geo + potential(t) <= best) 0
       else {
@@ -41,14 +41,14 @@ object Day19 extends App {
             best = best.max(geo)
 
             val res = bp.recipes
-              .filter(_._2.forall { req => rates(req._1) > 0 })
-              .map { (to, reqs) =>
-                val dt = reqs.map { (r, req) => cdiv((req - qnts(r)).max(0), rates(r)) }.max + 1
-                val newQnts =
-                  qnts.map { (r, qnt) => (r, qnt + rates(r) * dt - reqs.getOrElse(r, 0)) }
+              .filter(_.zip(rates).forall { (req, rate) => req == 0 || rate > 0 })
+              .zipWithIndex
+              .map { (reqs, i) =>
+                val dt = (0 :: reqs.zip(qnts).map(_ - _).zip(rates).map(cdiv)).max + 1
+                val newQnts = qnts.zip(rates).map(_ + _ * dt).zip(reqs).map(_ - _)
 
-                if (to == target) aux(t - dt, newQnts, rates, geo + (t - dt))
-                else aux(t - dt, newQnts, rates + (to -> (rates(to) + 1)), geo)
+                if (i == 3) aux(t - dt, newQnts, rates, geo + (t - dt))
+                else aux(t - dt, newQnts, rates.updated(i, rates(i) + 1), geo)
               }
               .max
 
@@ -57,10 +57,9 @@ object Day19 extends App {
         }
       }
     }
-    val empty = bp.recipes.map { (o, _) => (o, 0) }.toMap - target
-    aux(maxTime, empty, empty + ("ore" -> 1), 0)
+    aux(maxTime, List(0, 0, 0), List(1, 0, 0), 0)
   }
 
-  println(in.map { bp => bp.id * optimize(bp, "geode", 24) }.sum)
-  println(in.take(3).map(optimize(_, "geode", 32)).product)
+  println(in.map { bp => bp.id * optimize(bp, 24) }.sum)
+  println(in.take(3).map(optimize(_, 32)).product)
 }
