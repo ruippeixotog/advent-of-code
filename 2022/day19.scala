@@ -32,14 +32,13 @@ object Day19 extends App {
     var best = 0
 
     def aux(t: Int, qnts: List[Int], rates: List[Int], geo: Int): Int = {
-      if (t <= 1) { best = best.max(geo); geo }
+      best = best.max(geo)
+      if (t <= 1) geo
       else if (geo + potential(t) <= best) 0
       else {
         mem.get((t, qnts, rates)) match {
           case Some(geoAdd) => geo + geoAdd
           case None =>
-            best = best.max(geo)
-
             val res = bp.recipes
               .filter(_.zip(rates).forall { (req, rate) => req == 0 || rate > 0 })
               .zipWithIndex
