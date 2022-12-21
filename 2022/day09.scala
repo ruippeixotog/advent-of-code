@@ -13,7 +13,7 @@ object Day09 extends App {
   }
 
   def sim(sz: Int): List[List[(Int, Int)]] = {
-    in.flatMap { case (dir, n) => List.fill(n)(dirs(dir)) }
+    in.flatMap { (dir, n) => List.fill(n)(dirs(dir)) }
       .scanLeft((List.fill(sz)((0, 0)))) {
         case (Nil, _) => Nil
         case ((hx, hy) :: ts, (dx, dy)) => ts.scanLeft((hx + dx, hy + dy))(nextT)

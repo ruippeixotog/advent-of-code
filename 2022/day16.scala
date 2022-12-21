@@ -31,7 +31,7 @@ object Day16 extends App {
       dp(t - 1).foreach { case ((prev, visited), released) =>
         dp(t)((prev, visited)) = dp(t)((prev, visited)).max(released)
 
-        valves.foreach { case (next, flow) =>
+        valves.foreach { (next, flow) =>
           val nextT = t + dists(prev)(next)
 
           if (!visited(next) && nextT < maxTime) {
@@ -49,8 +49,8 @@ object Day16 extends App {
   println {
     val dp = run(26).groupMapReduce(_._1._2)(_._2)(Math.max)
 
-    dp.iterator.flatMap { case (visited1, released1) =>
-      dp.iterator.flatMap { case (visited2, released2) =>
+    dp.iterator.flatMap { (visited1, released1) =>
+      dp.iterator.flatMap { (visited2, released2) =>
         if ((visited1 & visited2).isEmpty) Some(released1 + released2)
         else None
       }

@@ -5,7 +5,7 @@ object Day12 extends App {
   val in = Source.fromFile("2022/day12.in").getLines.toVector
 
   val indices = for (i <- 0 until in.length; j <- 0 until in(i).length) yield (i, j)
-  val revIdx = indices.groupBy { case (i, j) => in(i)(j) }
+  val revIdx = indices.groupBy(in(_)(_))
 
   def elevation(i: Int, j: Int): Int = in(i)(j) match {
     case 'S' => 'a'
@@ -20,8 +20,8 @@ object Day12 extends App {
       case Some((((i, j), depth), q)) =>
         val neighbors =
           List((i - 1, j), (i + 1, j), (i, j - 1), (i, j + 1))
-            .filter { case (i1, j1) => i1 >= 0 && i1 < in.length && j1 >= 0 && j1 < in(i1).length }
-            .filter { case (i1, j1) => elevation(i1, j1) - elevation(i, j) <= 1 }
+            .filter { (i1, j1) => i1 >= 0 && i1 < in.length && j1 >= 0 && j1 < in(i1).length }
+            .filter { (i1, j1) => elevation(i1, j1) - elevation(i, j) <= 1 }
             .filterNot(visited)
 
         aux(q ++ neighbors.map((_, depth + 1)), visited ++ neighbors)

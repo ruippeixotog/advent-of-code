@@ -34,7 +34,7 @@ object Day15 extends App {
     val bs = in.collect { case (_, _, bx, by) if by == yTarget => bx }.sorted
 
     in.flatMap(interval(yTarget).tupled).normalized.remove(bs)
-      .map { case (from, to) => to - from + 1 }.sum
+      .map { (from, to) => to - from + 1 }.sum
   }
 
   println {

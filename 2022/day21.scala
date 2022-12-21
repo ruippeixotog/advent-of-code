@@ -6,8 +6,8 @@ object Day21 extends App {
   type OpTree = Map[String, Option[Long] | (String, String, String)]
 
   val in: OpTree = Source.fromFile("2022/day21.in").getLines.map {
-    case patt(id, num, null, null, null) => (id, Some(num.toLong))
-    case patt(id, null, lhs, op, rhs) => (id, (lhs, op, rhs))
+    case patt(id, num, null, null, null) => id -> Some(num.toLong)
+    case patt(id, null, lhs, op, rhs) => id -> (lhs, op, rhs)
   }.toMap
 
   val ops: Map[String, (Long, Long) => Long] =
@@ -31,7 +31,7 @@ object Day21 extends App {
         case (Some(v), "=", None) => solve(tree, rhs, v)
         case (None, op, Some(v)) => solve(tree, lhs, leftInv(op)(expected, v))
         case (Some(v), op, None) => solve(tree, rhs, rightInv(op)(expected, v))
-        case (l, op, r) => throw new Exception(s"Cannot solve $l $op $r = $expected")
+        case (l, op, r) => throw Exception(s"Cannot solve $l $op $r = $expected")
       }
     case res => throw Exception(s"Cannot solve $res = $expected")
   }

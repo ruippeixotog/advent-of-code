@@ -24,7 +24,7 @@ final case class Tetris(
     (windPatt(windIdx), copy(windIdx = (windIdx + 1) % windPatt.length))
 
   def collides(piece: List[(Int, Int)], x: Int, y: Int): Boolean =
-    piece.exists { case (dx, dy) => get(x + dx, y + dy) }
+    piece.exists { (dx, dy) => get(x + dx, y + dy) }
 
   def place(piece: List[(Int, Int)], x: Int, y: Int): Tetris =
     piece.foldLeft(this) { case (tetris, (dx, dy)) => tetris.set(x + dx, y + dy) }

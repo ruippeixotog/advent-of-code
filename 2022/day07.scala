@@ -26,11 +26,11 @@ object Day07 extends App {
       val dir = lsEntries.foldLeft(Dir()) {
         case (dir, List("dir", name)) => dir.copy(dirs = dir.dirs + (name -> Dir()))
         case (dir, List(size, name)) => dir.copy(files = dir.files + (name -> size.toInt))
-        case other => throw new IllegalArgumentException(other.toString)
+        case other => throw IllegalArgumentException(other.toString)
       }
       (fs.insert(cwd.reverse, dir), cwd)
     case other =>
-      throw new IllegalArgumentException(other.toString)
+      throw IllegalArgumentException(other.toString)
   }
   val (rootSize, dirSizes) = fs.dirSizes
 

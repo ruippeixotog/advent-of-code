@@ -11,16 +11,16 @@ object Day08 extends App {
   )
 
   println {
-    in.zipWithIndex.map { case (inRow, i) =>
-      inRow.zipWithIndex.count { case (h, j) =>
+    in.zipWithIndex.map { (inRow, i) =>
+      inRow.zipWithIndex.count { (h, j) =>
         lines(i, j).exists(_.forall(_ < h))
       }
     }.sum
   }
 
   println {
-    in.zipWithIndex.flatMap { case (inRow, i) =>
-      inRow.zipWithIndex.map { case (h, j) =>
+    in.zipWithIndex.flatMap { (inRow, i) =>
+      inRow.zipWithIndex.map { (h, j) =>
         lines(i, j).map { line => line.length.min(line.takeWhile(_ < h).length + 1) }.product
       }
     }.max

@@ -8,7 +8,7 @@ object Day03 extends App {
 
   println(
     in.map { line => line.splitAt(line.length / 2) }
-      .map { case (l, r) => prio((l.toSet & r.toSet).head) }
+      .map { (l, r) => prio((l.toSet & r.toSet).head) }
       .sum
   )
   println(in.map(_.toSet).grouped(3).map(_.reduce(_ & _).head).map(prio).sum)
