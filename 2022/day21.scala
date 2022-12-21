@@ -5,6 +5,10 @@ object Day21 extends App {
 
   type OpTree = Map[String, Option[Long] | (String, String, String)]
 
+  sealed trait OpResult
+  case class Solved(v: Long) extends OpResult { override def toString = v.toString }
+  case class Unsolved(fun: Long => Long) extends OpResult { override def toString = "???" }
+
   val in: OpTree = Source.fromFile("2022/day21.in").getLines.map {
     case patt(id, num, null, null, null) => id -> Some(num.toLong)
     case patt(id, null, lhs, op, rhs) => id -> (lhs, op, rhs)
@@ -18,28 +22,24 @@ object Day21 extends App {
     ("-" -> { (res, lhs) => ops("-")(lhs, res) }) +
     ("/" -> { (res, lhs) => ops("/")(lhs, res) })
 
-  def calc(tree: OpTree, curr: String): Option[Long] = tree(curr) match {
-    case num: Option[_] => num
-    case (lhs, op, rhs) => calc(tree, lhs).zip(calc(tree, rhs)).map(ops(op).tupled)
-  }
-
-  def solve(tree: OpTree, curr: String, expected: Long): Long = tree(curr) match {
-    case None => expected
+  def solve(tree: OpTree, curr: String): OpResult = tree(curr) match {
+    case None => Unsolved(identity)
+    case Some(v) => Solved(v)
     case (lhs, op, rhs) =>
-      (calc(tree, lhs), op, calc(tree, rhs)) match {
-        case (None, "=", Some(v)) => solve(tree, lhs, v)
-        case (Some(v), "=", None) => solve(tree, rhs, v)
-        case (None, op, Some(v)) => solve(tree, lhs, leftInv(op)(expected, v))
-        case (Some(v), op, None) => solve(tree, rhs, rightInv(op)(expected, v))
-        case (l, op, r) => throw Exception(s"Cannot solve $l $op $r = $expected")
+      (solve(tree, lhs), op, solve(tree, rhs)) match {
+        case (Solved(l), op, Solved(r)) => Solved(ops(op)(l, r))
+        case (Unsolved(fun), "=", Solved(v)) => Solved(fun(v))
+        case (Solved(v), "=", Unsolved(fun)) => Solved(fun(v))
+        case (Unsolved(fun), op, Solved(v)) => Unsolved(exp => fun(leftInv(op)(exp, v)))
+        case (Solved(v), op, Unsolved(fun)) => Unsolved(exp => fun(rightInv(op)(exp, v)))
+        case _ => throw Exception(s"Cannot solve $lhs $op $rhs")
       }
-    case res => throw Exception(s"Cannot solve $res = $expected")
   }
 
-  println(calc(in, "root").get)
+  println(solve(in, "root"))
   println {
     val (lhs, _, rhs) = in("root"): @unchecked
     val tree = in + ("humn" -> None) + ("root" -> (lhs, "=", rhs))
-    solve(tree, "root", 0)
+    solve(tree, "root")
   }
 }
