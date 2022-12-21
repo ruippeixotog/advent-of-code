@@ -17,7 +17,7 @@ object Day21 extends App {
   val rightInv = leftInv +
     ("-" -> { (res, lhs) => ops("-")(lhs, res) }) +
     ("/" -> { (res, lhs) => ops("/")(lhs, res) })
-  
+
   def calc(tree: OpTree, curr: String): Option[Long] = tree(curr) match {
     case num: Option[_] => num
     case (lhs, op, rhs) => calc(tree, lhs).zip(calc(tree, rhs)).map(ops(op).tupled)
@@ -35,11 +35,11 @@ object Day21 extends App {
       }
     case res => throw Exception(s"Cannot solve $res = $expected")
   }
-  
+
   println(calc(in, "root").get)
   println {
     val (lhs, _, rhs) = in("root"): @unchecked
-    val tree = in.updated("humn", None).updated("root", (lhs, "=", rhs))
+    val tree = in + ("humn" -> None) + ("root" -> (lhs, "=", rhs))
     solve(tree, "root", 0)
   }
 }
