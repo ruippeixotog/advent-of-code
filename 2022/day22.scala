@@ -5,13 +5,14 @@ object Day22 extends App {
   val inMap = in1.split("\n").map(_.toVector).toVector
   val inPath = """(R|L|\d+)""".r.findAllMatchIn(in2).map(_.group(1)).toList
 
-  val faceSize = 50
   val dirs = Vector((0, 1), (1, 0), (0, -1), (-1, 0))
 
   def mapBounds(vec: Vector[Char]) = vec.indexWhere(_ != ' ') to vec.lastIndexWhere(_ != ' ')
+  def getColumn(j: Int) = inMap.map(_.lift(j).getOrElse(' '))
+
   val jBounds = inMap.map(mapBounds)
-  val iBounds = inMap.maxBy(_.length).indices
-    .map { j => inMap.map(_.lift(j).getOrElse(' ')) }.map(mapBounds)
+  val iBounds = inMap.maxBy(_.length).indices.map(getColumn.andThen(mapBounds))
+  val faceSize = Math.sqrt(jBounds.map(_.size).sum / 6).toInt
 
   def sim(moveFun: (Int, Int, Int) => (Int, Int, Int)): Int = {
     val (iFinal, jFinal, dirFinal) = inPath.foldLeft((0, jBounds(0).start, 0)) {
@@ -53,20 +54,16 @@ object Day22 extends App {
     case (0, 2, 3) => (3, 0, 3)
   }
 
+  def rotate(i: Int, j: Int) = (j, faceSize - i - 1)
+
   def jumpCoords(i: Int, j: Int, dir: Int): (Int, Int, Int) = {
     val (iFace, jFace) = (i / faceSize, j / faceSize)
     val (iMod, jMod) = (i % faceSize, j % faceSize)
     val (iFaceNext, jFaceNext, dirNext) = jumpFace(iFace, jFace, dir)
 
-    val (iModNext, jModNext) = (dir, dirNext) match {
-      case (0, 2) => (faceSize - iMod - 1, faceSize + (faceSize - jMod - 1))
-      case (0, 3) => (faceSize + (faceSize - jMod - 1), iMod)
-      case (1, 1) => (faceSize - iMod - 1, jMod)
-      case (1, 2) => (jMod, faceSize + (faceSize - iMod - 1))
-      case (2, 0) => ((faceSize - iMod - 1), -jMod + 1)
-      case (2, 1) => (-jMod + 1, iMod)
-      case (3, 0) => (jMod, -iMod + 1)
-      case (3, 3) => (faceSize + iMod, jMod)
+    val (iModNext, jModNext) = {
+      val initial = (iMod - dirs(dir)._1 * faceSize, jMod - dirs(dir)._2 * faceSize)
+      LazyList.iterate(initial)(rotate.tupled)(Math.floorMod(dirNext - dir, 4))
     }
     (iFaceNext * faceSize + iModNext, jFaceNext * faceSize + jModNext, dirNext)
   }
