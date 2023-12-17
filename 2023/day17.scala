@@ -13,7 +13,7 @@ object Day17 extends App {
   def dijkstra(is: Int, js: Int, ie: Int, je: Int, minW: Int, maxW: Int): Int = {
     var dists = Map[(Int, Int, Int, Int), Int]()
     val q = mutable.PriorityQueue[(Int, Int, Int, Int, Int)]()(Ordering.by(-_._1))
-    q.enqueue((0 to 3).map((0, is, js, _, 0)): _*)
+    q ++= (0 to 3).map((0, is, js, _, 0))
 
     while (!q.isEmpty) {
       val (dist, i, j, d, nd) = q.dequeue()
@@ -22,7 +22,7 @@ object Day17 extends App {
         for {
           d1 <- 0 to 3 if d1 != rot(d, 2) && (d1 == d || nd >= minW) && (d1 != d || nd < maxW)
           (i1, j1) = (i + di(d1), j + dj(d1)) if isValid(i1, j1)
-        } q.enqueue((dist + in(i1)(j1), i1, j1, d1, if (d1 == d) nd + 1 else 1))
+        } q += ((dist + in(i1)(j1), i1, j1, d1, if (d1 == d) nd + 1 else 1))
       }
     }
     dists.filterKeys { (i, j, _, nd) => i == ie && j == je && nd >= minW }.values.min

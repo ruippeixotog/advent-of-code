@@ -42,13 +42,13 @@ object Day10 extends App {
   def floodFill(i0: Int, j0: Int, fillFunc: (Int, Int) => Boolean): Map[(Int, Int), Int] = {
     var visited = Map[(Int, Int), Int]()
     val q = mutable.Queue[(Int, Int, Int)]()
-    q.enqueue((i0, j0, 0))
+    q += ((i0, j0, 0))
 
     while (!q.isEmpty) {
       val (i, j, depth) = q.dequeue()
       if (isValid(i, j) && fillFunc(i, j) && !visited.contains((i, j))) {
         visited = visited + ((i, j) -> depth)
-        (0 to 3).foreach { d => q.enqueue((i + di(d), j + dj(d), depth + 1)) }
+        (0 to 3).foreach { d => q += ((i + di(d), j + dj(d), depth + 1)) }
       }
     }
     visited
