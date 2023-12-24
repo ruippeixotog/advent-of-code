@@ -28,7 +28,7 @@ object Day13 extends App {
     def parse(str: String): Packet = parse(packet, str).get
   }
 
-  val in = Source.fromFile("2022/day13.in").getLines
+  val in = Source.fromFile("day13.in").getLines
     .filterNot(_.isEmpty).map(PacketParser.parse).toList
 
   println {

@@ -2,7 +2,7 @@ import scala.io.Source
 import scala.collection.immutable.Queue
 
 object Day12 extends App {
-  val in = Source.fromFile("2022/day12.in").getLines.toVector
+  val in = Source.fromFile("day12.in").getLines.toVector
 
   val indices = for (i <- 0 until in.length; j <- 0 until in(i).length) yield (i, j)
   val revIdx = indices.groupBy(in(_)(_))

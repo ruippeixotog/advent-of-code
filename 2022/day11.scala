@@ -23,7 +23,7 @@ object Day11 extends App {
   def op(str: String): (Long, Long) => Long = if (str == "+") _ + _ else _ * _
   def opArg(str: String): Long => Long = if (str == "old") identity else _ => str.toLong
 
-  val in = patt.findAllMatchIn(Source.fromFile("2022/day11.in").mkString).map {
+  val in = patt.findAllMatchIn(Source.fromFile("day11.in").mkString).map {
     case Regex.Groups(itemsStr, opLhsStr, opStr, opRhsStr, test, ifTrue, ifFalse) =>
       def inspect(old: Long) = op(opStr)(opArg(opLhsStr)(old), opArg(opRhsStr)(old))
       val items = itemsStr.split(", ").toList.map(_.toLong)

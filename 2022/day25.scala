@@ -1,7 +1,7 @@
 import scala.io.Source
 
 object Day25 extends App {
-  val in = Source.fromFile("2022/day25.in").getLines.toList
+  val in = Source.fromFile("day25.in").getLines.toList
 
   def toBase10(num5: String): Long = num5.lastOption.fold(0L) {
     case '=' => 5 * toBase10(num5.init) - 2

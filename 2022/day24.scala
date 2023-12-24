@@ -2,7 +2,7 @@ import scala.io.Source
 import scala.collection.immutable.Queue
 
 object Day24 extends App {
-  val in = Source.fromFile("2022/day24.in").getLines.toVector
+  val in = Source.fromFile("day24.in").getLines.toVector
 
   val dirChars = Vector('^', 'v', '<', '>')
   val dirs = List((-1, 0), (1, 0), (0, -1), (0, 1))

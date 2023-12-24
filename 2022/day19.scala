@@ -9,7 +9,7 @@ object Day19 extends App {
       """Each obsidian robot costs (\d+) ore and (\d+) clay. """ +
       """Each geode robot costs (\d+) ore and (\d+) obsidian.""").r
 
-  val in = Source.fromFile("2022/day19.in").getLines.map { case patt(a, b, c, d, e, f, g) =>
+  val in = Source.fromFile("day19.in").getLines.map { case patt(a, b, c, d, e, f, g) =>
     Blueprint(
       a.toInt,
       List(

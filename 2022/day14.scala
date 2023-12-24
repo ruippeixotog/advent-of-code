@@ -1,7 +1,7 @@
 import scala.io.Source
 
 object Day14 extends App {
-  val in = Source.fromFile("2022/day14.in").getLines
+  val in = Source.fromFile("day14.in").getLines
     .map(_.split(" -> ").map(_.split(",").map(_.toInt)))
 
   def points(x0: Int, y0: Int, x1: Int, y1: Int): Iterable[(Int, Int)] =

@@ -2,7 +2,7 @@ import scala.io.Source
 import scala.collection.mutable
 
 object Day10 extends App {
-  val in = Source.fromFile("2023/day10.in").getLines.map(_.toVector).toVector
+  val in = Source.fromFile("day10.in").getLines.map(_.toVector).toVector
 
   val grid: Vector[Vector[Char]] = {
     val bordered =

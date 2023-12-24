@@ -9,7 +9,7 @@ object Day21 extends App {
   case class Solved(v: Long) extends OpResult { override def toString = v.toString }
   case class Unsolved(fun: Long => Long) extends OpResult { override def toString = "???" }
 
-  val in: OpTree = Source.fromFile("2022/day21.in").getLines.map {
+  val in: OpTree = Source.fromFile("day21.in").getLines.map {
     case patt(id, num, null, null, null) => id -> Some(num.toLong)
     case patt(id, null, lhs, op, rhs) => id -> (lhs, op, rhs)
   }.toMap

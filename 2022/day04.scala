@@ -1,7 +1,7 @@
 import scala.io.Source
 
 object Day04 extends App {
-  val in = Source.fromFile("2022/day04.in").getLines
+  val in = Source.fromFile("day04.in").getLines
     .map(_.split(",").map(_.split("-").map(_.toInt))).toList
 
   println(in.count { case Array(Array(l0, l1), Array(r0, r1)) =>

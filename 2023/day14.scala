@@ -4,7 +4,7 @@ import scala.io.Source
 object Day14 extends App {
   type Grid = Vector[Vector[Char]]
 
-  val in = Source.fromFile("2023/day14.in").getLines.map(_.toVector).toVector
+  val in = Source.fromFile("day14.in").getLines.map(_.toVector).toVector
 
   def tiltW(grid: Grid) = grid.map { row =>
     (row :+ '#').foldLeft((0, Vector[Char]())) {

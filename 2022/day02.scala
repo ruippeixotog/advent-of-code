@@ -1,7 +1,7 @@
 import scala.io.Source
 
 object Day02 extends App {
-  val in = Source.fromFile("2022/day02.in").getLines.map(_.split(" ")).toList
+  val in = Source.fromFile("day02.in").getLines.map(_.split(" ")).toList
 
   def score(moveFunc: (Int, Char) => Int): Int = {
     in.map { case Array(left, right) =>

@@ -2,7 +2,7 @@ import scala.collection.mutable
 import scala.io.Source
 
 object Day17 extends App {
-  val in = Source.fromFile("2023/day17.in").getLines.map(_.map(_ - '0')).toList
+  val in = Source.fromFile("day17.in").getLines.map(_.map(_ - '0')).toList
 
   val di = Vector(-1, 0, 1, 0)
   val dj = Vector(0, 1, 0, -1)

@@ -1,7 +1,7 @@
 import scala.io.Source
 
 object Day07 extends App {
-  val in = Source.fromFile("2023/day07.in").getLines.toList.map { line =>
+  val in = Source.fromFile("day07.in").getLines.toList.map { line =>
     val List(handStr, bidStr) = line.split(" ").toList
     handStr -> bidStr.toInt
   }

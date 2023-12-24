@@ -1,7 +1,7 @@
 import scala.io.Source
 
 object Day20 extends App {
-  val in = Source.fromFile("2022/day20.in").getLines.map(_.toLong).toVector
+  val in = Source.fromFile("day20.in").getLines.map(_.toLong).toVector
   val decKey = 811589153L
 
   def mix(xs: Vector[(Long, Int)]): Vector[(Long, Int)] = {

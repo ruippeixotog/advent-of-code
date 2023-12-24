@@ -2,7 +2,7 @@ import scala.io.Source
 import scala.math._
 
 object Day11 extends App {
-  val in = Source.fromFile("2023/day11.in").getLines.toVector
+  val in = Source.fromFile("day11.in").getLines.toVector
 
   val emptyRows = in.zipWithIndex.collect { case (row, i) if !row.contains('#') => i }
   val emptyCols = in.transpose.zipWithIndex.collect { case (col, j) if !col.contains('#') => j }

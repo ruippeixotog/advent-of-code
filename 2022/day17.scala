@@ -84,7 +84,7 @@ object Tetris {
 }
 
 object Day17 extends App {
-  val in = Source.fromFile("2022/day17.in").mkString.trim.map { ch => if (ch == '<') -1 else 1 }
+  val in = Source.fromFile("day17.in").mkString.trim.map { ch => if (ch == '<') -1 else 1 }
 
   println(Tetris(in).run(2022).totalHeight)
   println(Tetris(in).run(1000000000000L).totalHeight)

@@ -1,7 +1,7 @@
 import scala.io.Source
 
 object Day09 extends App {
-  val in = Source.fromFile("2022/day09.in").getLines.toList
+  val in = Source.fromFile("day09.in").getLines.toList
     .map(_.split(" ")).map { case Array(dir, n) => (dir.head, n.toInt) }
 
   val dirs = Map('U' -> (0, 1), 'D' -> (0, -1), 'L' -> (-1, 0), 'R' -> (1, 0))

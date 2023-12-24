@@ -1,7 +1,7 @@
 import scala.io.Source
 
 object Day01 extends App {
-  val in = Source.fromFile("2023/day01.in").getLines.toList
+  val in = Source.fromFile("day01.in").getLines.toList
 
   val spellings = List("one", "two", "three", "four", "five", "six", "seven", "eight", "nine")
 

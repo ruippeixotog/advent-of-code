@@ -1,7 +1,7 @@
 import scala.io.Source
 
 object Day13 extends App {
-  val in = Source.fromFile("2023/day13.in").mkString.split("\n\n").toList
+  val in = Source.fromFile("day13.in").mkString.split("\n\n").toList
     .map(_.split("\n").map(_.toVector).toVector)
 
   def findVertMirror(v: Vector[Vector[Char]], smudges: Int): Option[Int] =

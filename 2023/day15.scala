@@ -4,7 +4,7 @@ object Day15 extends App {
   val minusPatt = "(.+)-".r
   val eqPatt = "(.+)=([0-9]+)".r
 
-  val in = Source.fromFile("2023/day15.in").mkString.trim.split(",").toList
+  val in = Source.fromFile("day15.in").mkString.trim.split(",").toList
 
   def hash(str: String) = str.foldLeft(0) { (acc, c) => (acc + c) * 17 % 256 }
 

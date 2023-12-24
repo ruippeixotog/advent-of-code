@@ -1,7 +1,7 @@
 import scala.io.Source
 
 object Day09 extends App {
-  val in = Source.fromFile("2023/day09.in").getLines.toList
+  val in = Source.fromFile("day09.in").getLines.toList
     .map(_.split(" ").toList.map(_.toInt))
 
   def solve(xs: List[Int]): Int =

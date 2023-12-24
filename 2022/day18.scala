@@ -1,7 +1,7 @@
 import scala.io.Source
 
 object Day18 extends App {
-  val in = Source.fromFile("2022/day18.in").getLines.map(_.split(",").map(_.toInt).toVector).toSet
+  val in = Source.fromFile("day18.in").getLines.map(_.split(",").map(_.toInt).toVector).toSet
 
   val dirs = (Vector(1, 0, 0).permutations ++ Vector(-1, 0, 0).permutations).toList
 

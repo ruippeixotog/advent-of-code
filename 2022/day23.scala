@@ -1,7 +1,7 @@
 import scala.io.Source
 
 object Day23 extends App {
-  val in = Source.fromFile("2022/day23.in").getLines.zipWithIndex.flatMap { (row, i) =>
+  val in = Source.fromFile("day23.in").getLines.zipWithIndex.flatMap { (row, i) =>
     row.zipWithIndex.collect { case (ch, j) if ch == '#' => (i, j) }
   }.toSet
 

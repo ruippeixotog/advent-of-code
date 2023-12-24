@@ -1,7 +1,7 @@
 import scala.io.Source
 
 object Day03 extends App {
-  val in = Source.fromFile("2022/day03.in").getLines.toList
+  val in = Source.fromFile("day03.in").getLines.toList
 
   def prio(ch: Char): Int =
     if (ch >= 'a') ch - 'a' + 1 else ch - 'A' + 27

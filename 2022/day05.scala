@@ -4,7 +4,7 @@ object Day05 extends App {
   val patt = """move (\d+) from (\d) to (\d)""".r
 
   val (initialSt, cmds) = {
-    val Array(in1, in2) = Source.fromFile("2022/day05.in").mkString.split("\n\n")
+    val Array(in1, in2) = Source.fromFile("day05.in").mkString.split("\n\n")
 
     val st = in1.split("\n").toList.transpose.map(_.filter(_.isUpper)).filter(_.nonEmpty)
     val inCmds = in2.split("\n").map { case patt(n, from, to) =>

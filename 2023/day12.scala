@@ -2,7 +2,7 @@ import scala.io.Source
 import scala.collection.mutable
 
 object Day12 extends App {
-  val in = Source.fromFile("2023/day12.in").getLines.toList.map { row =>
+  val in = Source.fromFile("day12.in").getLines.toList.map { row =>
     val Array(recStr, nsStr) = row.split(" ")
     (recStr.toList, nsStr.split(",").map(_.toInt).toList)
   }

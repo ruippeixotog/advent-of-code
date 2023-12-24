@@ -1,7 +1,7 @@
 import scala.io.Source
 
 object Day22 extends App {
-  val Array(in1, in2) = Source.fromFile("2022/day22.in").mkString.split("\n\n")
+  val Array(in1, in2) = Source.fromFile("day22.in").mkString.split("\n\n")
   val inMap = in1.split("\n").map(_.toVector).toVector
   val inPath = """(R|L|\d+)""".r.findAllMatchIn(in2).map(_.group(1)).toList
 

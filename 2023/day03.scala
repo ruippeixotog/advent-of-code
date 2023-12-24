@@ -2,7 +2,7 @@ import scala.collection.mutable
 import scala.io.Source
 
 object Day03 extends App {
-  val in = Source.fromFile("2023/day03.in").getLines.toVector
+  val in = Source.fromFile("day03.in").getLines.toVector
 
   val ids = mutable.Map[(Int, Int), Int]()
   var values = Vector[Int]()

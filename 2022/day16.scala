@@ -5,7 +5,7 @@ import scala.io.Source
 object Day16 extends App {
   val patt = """Valve ([A-Z]+) has flow rate=(\d+); tunnels? leads? to valves? ([A-Z, ]+)""".r
 
-  val in = Source.fromFile("2022/day16.in").getLines.map { case patt(v, flow, edges) =>
+  val in = Source.fromFile("day16.in").getLines.map { case patt(v, flow, edges) =>
     v -> (flow.toInt, edges.split(", ").toList)
   }.toMap
 

@@ -15,7 +15,7 @@ case class Dir(files: Map[String, Int] = Map(), dirs: Map[String, Dir] = Map()) 
 }
 
 object Day07 extends App {
-  val in = Source.fromFile("2022/day07.in").mkString.split("(\n|^)\\$ ").tail
+  val in = Source.fromFile("day07.in").mkString.split("(\n|^)\\$ ").tail
     .map(_.split("\n").toList.map(_.split(" ").toList))
 
   val (fs, _) = in.foldLeft((Dir(), List.empty[String])) {

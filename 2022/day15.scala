@@ -3,7 +3,7 @@ import scala.io.Source
 object Day15 extends App {
   val patt = """Sensor at x=(-?\d+), y=(-?\d+): closest beacon is at x=(-?\d+), y=(-?\d+)""".r
 
-  val in = Source.fromFile("2022/day15.in").getLines.map { case patt(sx, sy, bx, by) =>
+  val in = Source.fromFile("day15.in").getLines.map { case patt(sx, sy, bx, by) =>
     (sx.toInt, sy.toInt, bx.toInt, by.toInt)
   }.toList
 

@@ -1,7 +1,7 @@
 import scala.io.Source
 
 object Day08 extends App {
-  val in = Source.fromFile("2022/day08.in").getLines.toVector
+  val in = Source.fromFile("day08.in").getLines.toVector
 
   def lines(i: Int, j: Int): Seq[Seq[Char]] = List(
     (0 until j).reverse.map(in(i)),

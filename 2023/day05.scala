@@ -5,7 +5,7 @@ object Day05 extends App {
   val seedsPatt = """seeds: (.+)""".r
   val rulePatt = """(?s)(.+)-to-(.+) map:\n(.+)""".r
 
-  val (seeds, rules) = Source.fromFile("2023/day05.in").mkString.split("\n\n").toList match {
+  val (seeds, rules) = Source.fromFile("day05.in").mkString.split("\n\n").toList match {
     case seedsPatt(seedsStr) :: rulesStrs =>
       val seeds = seedsStr.split(" ").toList.map(_.toLong)
       val rules = rulesStrs.map { case rulePatt(srcObj, destObj, rulesStr) =>

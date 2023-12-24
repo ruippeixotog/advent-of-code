@@ -33,7 +33,7 @@ object Day19 extends App {
 
   val partRegex = """\{x=([0-9]+),m=([0-9]+),a=([0-9]+),s=([0-9]+)\}""".r
 
-  val (wfs, parts) = Source.fromFile("2023/day19.in").mkString.split("\n\n") match {
+  val (wfs, parts) = Source.fromFile("day19.in").mkString.split("\n\n") match {
     case Array(wfsStr, partsStr) =>
       val parts = partsStr.split("\n").toList.map { case partRegex(x, m, a, s) =>
         Map('x' -> x.toInt, 'm' -> m.toInt, 'a' -> a.toInt, 's' -> s.toInt)

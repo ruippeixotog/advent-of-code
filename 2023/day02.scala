@@ -4,7 +4,7 @@ object Day02 extends App {
   val gamePatt = """Game ([0-9]+): (.+)""".r
   val drawPatt = """([0-9]+) (.+)""".r
 
-  val in = Source.fromFile("2023/day02.in").getLines.map { case gamePatt(id, games) =>
+  val in = Source.fromFile("day02.in").getLines.map { case gamePatt(id, games) =>
     id.toInt -> games.split("; ").toList.flatMap(
       _.split(", ").toList.map { case drawPatt(n, color) => (n.toInt, color) }
     )

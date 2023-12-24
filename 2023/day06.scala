@@ -6,11 +6,11 @@ object Day06 extends App {
   def getIntVec(str: String): List[Long] = str.trim.split(" +").map(_.toLong).toList
   def getSpacedInt(str: String): Long = str.replace(" ", "").toLong
 
-  val in1 = Source.fromFile("2023/day06.in").mkString match {
+  val in1 = Source.fromFile("day06.in").mkString match {
     case patt(timesStr, distsStr) =>
       getIntVec(timesStr).zip(getIntVec(distsStr))
   }
-  val in2 = Source.fromFile("2023/day06.in").mkString match {
+  val in2 = Source.fromFile("day06.in").mkString match {
     case patt(timesStr, distsStr) =>
       List(getSpacedInt(timesStr) -> getSpacedInt(distsStr))
   }

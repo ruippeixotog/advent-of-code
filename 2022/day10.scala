@@ -1,7 +1,7 @@
 import scala.io.Source
 
 object Day10 extends App {
-  val in = Source.fromFile("2022/day10.in").getLines.map(_.split(" ")).toList
+  val in = Source.fromFile("day10.in").getLines.map(_.split(" ")).toList
 
   val xs = in.flatMap {
     case Array("addx", n) => List(0, n.toInt)

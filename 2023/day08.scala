@@ -4,7 +4,7 @@ import scala.collection.mutable.PriorityQueue
 object Day08 extends App {
   val patt = """(.+) = \((.+), (.+)\)""".r
 
-  val (dirs, graph) = Source.fromFile("2023/day08.in").mkString.split("\n\n").toList match {
+  val (dirs, graph) = Source.fromFile("day08.in").mkString.split("\n\n").toList match {
     case List(dirs, rulesStr) =>
       val graph = rulesStr.split("\n")
         .collect { case patt(from, toL, toR) => from -> (toL, toR) }

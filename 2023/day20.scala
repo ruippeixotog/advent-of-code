@@ -3,7 +3,7 @@ import scala.io.Source
 import java.io.PrintStream
 
 object Day20 extends App {
-  val in = Source.fromFile("2023/day20.in").getLines.map { line =>
+  val in = Source.fromFile("day20.in").getLines.map { line =>
     line.split(" -> ") match {
       case Array("broadcaster", toStr) => ("broadcaster" -> (' ', toStr.split(", ").toList))
       case Array(name, toStr) => (name.tail -> (name.head, toStr.split(", ").toList))

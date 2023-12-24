@@ -6,7 +6,7 @@ object Day04 extends App {
 
   val patt = """Card +[0-9]+: ([0-9 ]+) \| ([0-9 ]+)""".r
 
-  val in: List[Card] = Source.fromFile("2023/day04.in").getLines.map {
+  val in: List[Card] = Source.fromFile("day04.in").getLines.map {
     case patt(winners, numbers) =>
       (winners.trim.split(" +").map(_.trim.toInt), numbers.trim.split(" +").map(_.trim.toInt))
   }.toList
